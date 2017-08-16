@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { Provider } from "react-redux";
 import "./index.css";
 import App from "./App";
 import registerServiceWorker from "./registerServiceWorker";
@@ -16,20 +17,13 @@ const actions = bindActionCreators(
   store.dispatch
 );
 
-const render = () => {
-  const state = store.getState();
-  ReactDOM.render(
-    <App
-      todos={state.todos}
-      currentTodo={state.currentTodo}
-      changeCurrent={actions.updateCurrent}
-    />,
-    document.getElementById("root")
-  );
-};
-render();
+const state = store.getState();
 
-// this will rerender the page every time state is changed
-store.subscribe(render);
+ReactDOM.render(
+  <Provider store={store}>
+    <App changeCurrent={actions.updateCurrent} />
+  </Provider>,
+  document.getElementById("root")
+);
 
 registerServiceWorker();
